@@ -18,6 +18,8 @@ func HitchRequestLogger(l *log.Logger) func(http.Handler) http.Handler {
 			var start, end int64
 			start = time.Now().UnixNano()
 
+			path := r.URL.Path
+
 			rw := &requestLoggerResponseWriter{
 				ResponseWriter: w,
 				code:           http.StatusOK,
@@ -53,9 +55,9 @@ func HitchRequestLogger(l *log.Logger) func(http.Handler) http.Handler {
 			}
 
 			if l == nil {
-				log.Printf("%s\t%s\t%s\t%s\n", gocolorize.NewColor("cyan").Paint(r.Method), gocolorize.NewColor("blue").Paint(r.URL.Path), code, time)
+				log.Printf("%s\t%s\t%s\t%s\n", gocolorize.NewColor("cyan").Paint(r.Method), gocolorize.NewColor("blue").Paint(path), code, time)
 			} else {
-				l.Printf("%s\t%s\t%s\t%s\n", gocolorize.NewColor("cyan").Paint(r.Method), gocolorize.NewColor("blue").Paint(r.URL.Path), code, time)
+				l.Printf("%s\t%s\t%s\t%s\n", gocolorize.NewColor("cyan").Paint(r.Method), gocolorize.NewColor("blue").Paint(path), code, time)
 			}
 		})
 	}
